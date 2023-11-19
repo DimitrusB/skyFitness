@@ -5,6 +5,6 @@ import apiReducer from './reducers/api.jsx'
 
 export const store = configureStore({
     reducer: {
-        playerControl: apiReducer,
+        api: apiReducer,
     },
 })

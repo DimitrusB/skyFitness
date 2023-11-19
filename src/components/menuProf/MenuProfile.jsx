@@ -1,10 +1,26 @@
 import * as S from './MenuProfile.styles';
 import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { signOut } from '../store/actions/creators'
+import { exit } from '../api/api'
 
 export const MenuProfile = ({ isOpen, color }) => {
-	function signOut() {
-		localStorage.removeItem('name');
-	}
+
+	const navigate = useNavigate()
+	const dispatch = useDispatch()
+
+	const handleExit = async () => {
+		try {
+			exit()
+			dispatch(signOut());
+			window.localStorage.removeItem("name")
+			window.localStorage.removeItem("lesson")
+			navigate('/')
+		} catch (error) {
+			
+		}
+	  };
 
 	return (
 		<S.Dropdown >
@@ -33,7 +49,7 @@ export const MenuProfile = ({ isOpen, color }) => {
 					<S.EachDropdownContent $color={color}>Профиль</S.EachDropdownContent>
 				</NavLink>
 				<NavLink  to='/auth'>
-					<S.EachDropdownContent $color={color} onClick={signOut}>
+					<S.EachDropdownContent $color={color} onClick={handleExit}>
 						Выйти
 					</S.EachDropdownContent>
 				</NavLink>

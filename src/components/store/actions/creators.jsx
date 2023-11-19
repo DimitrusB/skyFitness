@@ -4,8 +4,11 @@ export const editProgress = () => ({
     type: EDIT_PROGRESS,
 })
 
-export const bayCourse = () => ({
+export const bay = (data) => ({
     type: BAY_COURSE,
+    payload: {
+        data,
+    },
 })
 
 export const editEmail= () => ({
@@ -17,11 +20,8 @@ export const editPassword = (tracks) => ({
 
 })
 
-export const signOut = (tracks) => ({
+export const signOut = () => ({
     type: SIGN_OUT,
-    payload: {
-        tracks,
-    },
 })
 
 export const signIn = (data) => ({

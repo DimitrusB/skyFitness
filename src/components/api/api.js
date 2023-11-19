@@ -14,7 +14,7 @@ const firebaseConfig = {
 };
 
 const appFitnes = initializeApp(firebaseConfig);
-const auth = getAuth(appFitnes);
+export const auth = getAuth(appFitnes);
 const db = getDatabase(appFitnes);
 
 
@@ -39,7 +39,7 @@ export async function getData() {
       const userRef = ref(db, 'users/' + userId);
     
       const userData = {
-        email: "neboja7872@rdluxe.com",
+        email: email,
         courses:{
           bodyflex:{
             statusBay: false,
@@ -152,9 +152,6 @@ export async function getData() {
   export const enter = async (email, password) => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      console.log(user);
-    
       const userId = userCredential.user.uid;
       const userRef = ref(db, 'users/' + userId);
       let snapshot  = await get(userRef);
@@ -167,3 +164,47 @@ export async function getData() {
       throw error; 
     }
   }
+
+
+  export const getUserLessons = async () => {
+    try {
+
+      
+      const userId = auth.currentUser.uid;
+      
+      const userRef = ref(db, 'users/' + userId);
+      
+      let snapshot  = await get(userRef);
+      if (snapshot.exists()) {
+        return snapshot.val()
+      } else {
+        console.log('No data available');
+      }
+    } catch (error) {
+      throw error; 
+    }
+  }
+
+
+  export const exit = async () => {
+    try {
+      signOut(auth)
+    } catch (error) {
+      throw error; 
+    }
+  }
+
+  export const bayCourse = async (courseName) => {
+    console.log("bay");
+    const user = auth.currentUser;
+    const courseRef = ref(db, 'users/' + user.uid + '/courses/' + courseName);
+    
+    try {
+        await update(courseRef, {
+            statusBay: true,
+        });
+        console.log('Course purchased successfully');
+    } catch(error) {
+        console.error('Error updating data:', error);
+    }
+} 

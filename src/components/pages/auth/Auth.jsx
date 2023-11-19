@@ -19,8 +19,9 @@ export const Auth = () => {
 		try {
 		  const userData = await enter(email, password);
 		  dispatch(signIn(userData));
+		  window.localStorage.setItem('lesson', JSON.stringify(userData.courses));
+		  window.localStorage.setItem('name', userData.email);
 		  navigate('/profile')
-			localStorage.setItem('name', email);
 		} catch(error) {
 			if (error.message === "Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests).") {
 				setError("Акаунт временно заблокирован. Превышено количество неудачных попыток входа")

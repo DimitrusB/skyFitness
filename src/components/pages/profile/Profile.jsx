@@ -1,27 +1,43 @@
 import { NavLink } from "react-router-dom";
 import * as S from "./Profile.styles";
-import { getData } from "../../api/api";
 import { useEffect, useState } from "react";
 import { MenuProfile } from "../../menuProf/MenuProfile";
 import { ListLessons } from "../../listLesons";
+import { getUserLessons, auth, editPassword } from "../../api/api";
+import { onAuthStateChanged } from 'firebase/auth';
+import { useDispatch } from 'react-redux'
+import { signIn } from '../../store/actions/creators'
+
 
 
 export const ProfilePage = () => {
-	const name = localStorage.getItem('name');
-	const [values, setValues] = useState([]);
+
+	const name = window.localStorage.getItem("name");
+	const dispatch = useDispatch()
 	const [isOpen, setIsOpen] = useState(false);
 	const toggleOpen = () => setIsOpen(!isOpen);
+	const [userLesson, setUserLesson] = useState(JSON.parse(window.localStorage.getItem("lesson")));
 
-  useEffect(() => {
-  getData()
-  .then((data) => {
-    const vals = Object.values(data);
 
-    setValues(vals);
-  })
-  .catch((error) => console.error(error));
-  }, [])
-
+	useEffect(() => {
+		const unsubscribe = onAuthStateChanged(auth, (user) => {
+		  if (user) {
+			(async () => {
+			  try {
+				const userData = await getUserLessons();
+				dispatch(signIn(userData));
+				setUserLesson(userData.courses)
+				console.log(userData);
+			  } catch (error) {
+				console.log(error);
+			  }
+			})();
+		  } else {
+		  }
+		});
+	  
+		return () => unsubscribe();
+	  }, []);
 
 
   function mouseOut() {
@@ -60,7 +76,7 @@ export const ProfilePage = () => {
 				<S.ButtonS>Редактировать пароль</S.ButtonS>
 			</S.NamePass>
 			<S.MyCoursesW>Мои курсы</S.MyCoursesW>
-			<ListLessons/>
+			<ListLessons userLesson={userLesson}/>
 		</S.Wrapper>
 	);
 };

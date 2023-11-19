@@ -1,18 +1,16 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { getData } from "../api/api";
 import * as S from "./listLessons.style";
 import { useNavigate } from "react-router";
 
-export const ListLessons = () => {
-  const user = useSelector((state) => state.playerControl.dataUser);
+export const ListLessons = ({userLesson}) => {
   const [values, setValues] = useState([]);
 
   const navigate = useNavigate();
   const [activeModal, setActiveModal] = useState(null);
-
+  
   const closeModal = () => setActiveModal(null);
-
+  
   const openModal = (courseKey) => setActiveModal(courseKey);
 
   const courseNameMapping = {
@@ -54,13 +52,13 @@ export const ListLessons = () => {
 
   return (
     <S.MyCourses>
-      {Object.keys(user.courses).map((courseKey) => {
+      {Object.keys(userLesson).map((courseKey) => {
         const courseSvg = courseNameMapping[courseKey];
         const courseTitle = courseTitleMapping[courseKey];
         const course = values.find((value) => value._id === courseKey);
 
         return (
-          <S.CouresNameAndSVG key={courseKey}>
+          <S.CouresNameAndSVG key={courseKey} $enabled={userLesson[courseKey].statusBay}> 
             <S.NameCourse>{courseTitle}</S.NameCourse>
             <div>
               <img src={courseSvg} alt={courseTitle} />

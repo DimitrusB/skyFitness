@@ -7,7 +7,7 @@ import {EDIT_PROGRESS, BAY_COURSE, EDIT_EMAIL, EDIT_PASSWORD, SIGN_OUT, SIGN_IN,
 
 
 const initialState = {
-    dataUser: [],
+    dataUser: null,
 }
 
 export default function apiReducer(state = initialState, action) {
@@ -28,6 +28,31 @@ export default function apiReducer(state = initialState, action) {
             return {
                 ...state,
                 dataUser: data,
+            }
+        }
+
+        case SIGN_OUT: {
+            return {
+                ...state,
+                dataUser: [],
+            }
+        }
+
+        case BAY_COURSE: {
+            const { data } = action.payload
+      
+            return {
+              ...state,
+              dataUser: {
+                ...state.dataUser,
+                courses: {
+                  ...state.dataUser.courses,
+                  [data]: {
+                    ...state.dataUser.courses[data],
+                    statusBay: true
+                  }
+                }
+              }
             }
         }
 
