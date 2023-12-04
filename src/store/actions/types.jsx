@@ -1,0 +1,8 @@
+export const REGISTRATION = 'REGISTRATION'
+export const SIGN_IN = 'SIGN_IN'
+export const SIGN_OUT = 'SIGN_OUT'
+export const EDIT_PASSWORD = 'EDIT_PASSWORD'
+export const EDIT_EMAIL = 'EDIT_EMAIL'
+export const BAY_COURSE = 'BAY_COURSE'
+export const EDIT_PROGRESS = 'EDIT_PROGRESS'
+export const EDIT_READY_STATUS = 'EDIT_READY_STATUS'
